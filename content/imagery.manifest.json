@@ -1,0 +1,116 @@
+[
+  {
+    "pairId": "katrina-lower-ninth",
+    "stormId": "AL122005",
+    "label": "Lower Ninth Ward, New Orleans",
+    "lat": 29.967,
+    "lon": -90.034,
+    "before": {
+      "url": "https://storms.ngs.noaa.gov/storms/katrina/data/0905/N3030W09015/N3030W09000.jpg",
+      "date": "2005-04-24",
+      "source": "NOAA NGS",
+      "attribution": "NOAA National Geodetic Survey, public domain"
+    },
+    "after": {
+      "url": "https://storms.ngs.noaa.gov/storms/katrina/data/0908/N3000W09015/N3000W09000.jpg",
+      "date": "2005-08-31",
+      "source": "NOAA NGS",
+      "attribution": "NOAA National Geodetic Survey, public domain"
+    }
+  },
+  {
+    "pairId": "sandy-mantoloking",
+    "stormId": "AL182012",
+    "label": "Mantoloking, New Jersey",
+    "lat": 40.040,
+    "lon": -74.050,
+    "before": {
+      "url": "https://storms.ngs.noaa.gov/storms/sandy/data/before/40040W07415/40040W07400.jpg",
+      "date": "2012-03-18",
+      "source": "NOAA NGS",
+      "attribution": "NOAA National Geodetic Survey, public domain"
+    },
+    "after": {
+      "url": "https://storms.ngs.noaa.gov/storms/sandy/data/20121031a_RGB/40040W07415/40040W07400.jpg",
+      "date": "2012-10-31",
+      "source": "NOAA NGS",
+      "attribution": "NOAA National Geodetic Survey, public domain"
+    }
+  },
+  {
+    "pairId": "michael-mexico-beach",
+    "stormId": "AL142018",
+    "label": "Mexico Beach, Florida",
+    "lat": 29.940,
+    "lon": -85.420,
+    "before": {
+      "url": "https://storms.ngs.noaa.gov/storms/michael/data/before/3000W08530/3000W08515.jpg",
+      "date": "2018-09-15",
+      "source": "NOAA NGS",
+      "attribution": "NOAA National Geodetic Survey, public domain"
+    },
+    "after": {
+      "url": "https://storms.ngs.noaa.gov/storms/michael/data/20181011a_RGB/3000W08530/3000W08515.jpg",
+      "date": "2018-10-11",
+      "source": "NOAA NGS",
+      "attribution": "NOAA National Geodetic Survey, public domain"
+    }
+  },
+  {
+    "pairId": "andrew-homestead",
+    "stormId": "AL041992",
+    "label": "Homestead, Florida",
+    "lat": 25.468,
+    "lon": -80.477,
+    "before": {
+      "url": "https://earthobservatory.nasa.gov/ContentFeature/Andrew/images/andrew_landsat_19920726_lrg.jpg",
+      "date": "1992-07-26",
+      "source": "NASA Earth Observatory",
+      "attribution": "NASA Earth Observatory, Landsat"
+    },
+    "after": {
+      "url": "https://earthobservatory.nasa.gov/ContentFeature/Andrew/images/andrew_landsat_19920927_lrg.jpg",
+      "date": "1992-09-27",
+      "source": "NASA Earth Observatory",
+      "attribution": "NASA Earth Observatory, Landsat"
+    }
+  },
+  {
+    "pairId": "harvey-rockport",
+    "stormId": "AL092017",
+    "label": "Rockport, Texas",
+    "lat": 28.020,
+    "lon": -97.054,
+    "before": {
+      "url": "https://storms.ngs.noaa.gov/storms/harvey/data/before/28000W09715/28000W09700.jpg",
+      "date": "2017-08-15",
+      "source": "NOAA NGS",
+      "attribution": "NOAA National Geodetic Survey, public domain"
+    },
+    "after": {
+      "url": "https://storms.ngs.noaa.gov/storms/harvey/data/20170827a_RGB/28000W09715/28000W09700.jpg",
+      "date": "2017-08-27",
+      "source": "NOAA NGS",
+      "attribution": "NOAA National Geodetic Survey, public domain"
+    }
+  },
+  {
+    "pairId": "maria-puerto-rico",
+    "stormId": "AL152017",
+    "label": "Yabucoa, Puerto Rico",
+    "lat": 18.050,
+    "lon": -65.880,
+    "before": {
+      "url": "https://earthobservatory.nasa.gov/blogs/elnino/wp-content/uploads/sites/3/2017/09/PuertoRico_VIIRS_2017250_lrg.jpg",
+      "date": "2017-07-24",
+      "source": "NASA Earth Observatory",
+      "attribution": "NASA Earth Observatory, Suomi NPP / VIIRS"
+    },
+    "after": {
+      "url": "https://earthobservatory.nasa.gov/blogs/elnino/wp-content/uploads/sites/3/2017/09/PuertoRico_VIIRS_2017268_lrg.jpg",
+      "date": "2017-09-25",
+      "source": "NASA Earth Observatory",
+      "attribution": "NASA Earth Observatory, Suomi NPP / VIIRS"
+    }
+  }
+]

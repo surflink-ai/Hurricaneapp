@@ -1,0 +1,42 @@
+{
+  "name": "hurricane-atlas",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "data:fetch": "tsx scripts/fetch-hurdat2.ts",
+    "data:verify": "tsx scripts/verify-parser.ts",
+    "data:enrich": "tsx scripts/enrich-billion-dollar.ts && tsx scripts/enrich-tcr.ts && tsx scripts/enrich-wikipedia.ts && tsx scripts/enrich-retired-names.ts",
+    "data:imagery": "tsx scripts/fetch-imagery.ts",
+    "data:all": "npm run data:fetch && npm run data:verify && npm run data:enrich && npm run data:imagery",
+    "prebuild": "npm run data:all",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "clsx": "^2.1.1",
+    "comlink": "^4.4.2",
+    "lucide-react": "^0.469.0",
+    "mapbox-gl": "^3.9.0",
+    "motion": "^11.15.0",
+    "next": "^15.1.3",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "react-map-gl": "^8.0.0-beta.0",
+    "recharts": "^2.15.0",
+    "zustand": "^5.0.2"
+  },
+  "devDependencies": {
+    "@types/mapbox-gl": "^3.4.1",
+    "@types/node": "^22.10.0",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "autoprefixer": "^10.4.20",
+    "postcss": "^8.5.0",
+    "tailwindcss": "^3.4.17",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.2"
+  }
+}
