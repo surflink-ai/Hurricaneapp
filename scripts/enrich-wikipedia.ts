@@ -102,8 +102,16 @@ async function main(): Promise<void> {
   let enriched = 0;
   let probed = 0;
 
+  const limit = parseInt(process.env.WIKIPEDIA_MAX ?? "120", 10);
+  const candidates = [...idx.storms]
+    .filter((s) => s.impact?.source !== "NOAA NCEI Billion-Dollar Disasters")
+    .sort((a, b) => b.ace - a.ace)
+    .slice(0, limit);
+  const candidateIds = new Set(candidates.map((s) => s.id));
+  console.log(`[enrich-wikipedia] probing top ${candidates.length} by ACE (limit=${limit})`);
+
   for (const storm of idx.storms) {
-    if (storm.impact?.source === "NOAA NCEI Billion-Dollar Disasters") continue;
+    if (!candidateIds.has(storm.id)) continue;
     const cacheFile = join(CACHE_DIR, `${storm.id}.json`);
     if (existsSync(cacheFile)) {
       const s = await stat(cacheFile);

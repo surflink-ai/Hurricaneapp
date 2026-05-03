@@ -10,7 +10,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
   pages: write
   id-token: write
 
@@ -21,10 +21,12 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     env:
       NEXT_STATIC_EXPORT: "true"
       NEXT_PUBLIC_BASE_PATH: "/Hurricaneapp"
       NEXT_PUBLIC_MAPBOX_TOKEN: ${{ secrets.NEXT_PUBLIC_MAPBOX_TOKEN || 'pk.eyJ1IjoicGFldzgyIiwiYSI6ImNtbTEyMnQ3bDA1OTQyb3ByZmh2MnN2dzkifQ.2F23FdYIrX1PZdsGgZxV_g' }}
+      WIKIPEDIA_MAX: "80"
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -34,12 +36,22 @@ jobs:
       - name: Install dependencies
         run: npm install --legacy-peer-deps
       - name: Fetch HURDAT2 + verify parser
+        timeout-minutes: 3
         run: npm run data:fetch && npm run data:verify
-      - name: Best-effort enrichment
-        run: npm run data:enrich || true
+      - name: Best-effort NCEI + TCR + retired-names
+        timeout-minutes: 4
+        run: |
+          npx tsx scripts/enrich-billion-dollar.ts || true
+          npx tsx scripts/enrich-tcr.ts || true
+          npx tsx scripts/enrich-retired-names.ts || true
+      - name: Best-effort Wikipedia (top by ACE only)
+        timeout-minutes: 5
+        run: npx tsx scripts/enrich-wikipedia.ts || true
       - name: Best-effort imagery
+        timeout-minutes: 3
         run: npm run data:imagery || true
       - name: Best-effort active storms
+        timeout-minutes: 1
         run: npm run data:active || true
       - name: Split storms for static fetch
         run: npm run data:split
@@ -47,12 +59,26 @@ jobs:
         run: npx next build
       - name: Add .nojekyll
         run: touch out/.nojekyll
-      - uses: actions/configure-pages@v5
+      - name: Configure Pages
+        id: configpages
+        continue-on-error: true
+        uses: actions/configure-pages@v5
         with:
           enablement: true
-      - uses: actions/upload-pages-artifact@v3
+      - name: Upload Pages artifact
+        if: steps.configpages.outcome == 'success'
+        uses: actions/upload-pages-artifact@v3
         with:
           path: ./out
+      - name: Fallback - publish to gh-pages branch
+        if: steps.configpages.outcome != 'success'
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./out
+          publish_branch: gh-pages
+          force_orphan: true
+          commit_message: "deploy: ${{ github.sha }}"
 
   deploy:
     needs: build
@@ -63,3 +89,4 @@ jobs:
     steps:
       - id: deployment
         uses: actions/deploy-pages@v4
+        continue-on-error: true
