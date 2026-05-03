@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { useAtlasStore } from "@/lib/store";
 import { LANDFALL_REGIONS } from "@/lib/geo";
+import { withBase } from "@/lib/base-path";
 import { CAT_COLORS, CAT_LABELS, CAT_ORDER, catRank } from "@/lib/saffir";
 import type { SaffirCat } from "@/lib/types";
 import { cn } from "@/lib/cn";
@@ -22,7 +23,7 @@ export function Landfall() {
 
   useEffect(() => {
     let cancel = false;
-    fetch("/data/storms.json")
+    fetch(withBase("/data/storms.json"))
       .then((r) => r.json())
       .then((stormsObj: Record<string, { id: string; year: number; observations: { lat: number; lon: number; recordId: string; windKt: number }[] }>) => {
         if (cancel) return;

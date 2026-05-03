@@ -13,6 +13,7 @@ import {
   lineWidthExpression
 } from "@/lib/mapbox-expressions";
 import { CAT_COLORS, CAT_LABELS } from "@/lib/saffir";
+import { withBase } from "@/lib/base-path";
 
 const MAP_STYLE = "mapbox://styles/mapbox/light-v11";
 const TOKEN = process.env.NEXT_PUBLIC_MAPBOX_TOKEN ?? "";
@@ -96,7 +97,7 @@ export function AtlasMap({ index }: AtlasMapProps) {
         }
       }
       try {
-        const res = await fetch("/data/storms.json");
+        const res = await fetch(withBase("/data/storms.json"));
         const stormsObj = (await res.json()) as Record<string, { id: string; name: string; year: number; peakCat: string; observations: { lat: number; lon: number; recordId: string; status: string; windKt: number; iso: string }[] }>;
         const tracks = Object.values(stormsObj).map((s) => ({
           id: s.id,
@@ -283,7 +284,7 @@ export function AtlasMap({ index }: AtlasMapProps) {
     const map = mapRef.current;
     if (!map || !tracksReady) return;
     let cancel = false;
-    fetch("/api/nhc-active")
+    fetch(withBase("/data/active.json"))
       .then((r) => (r.ok ? r.json() : { storms: [] }))
       .then((j: { storms?: ActiveStorm[] }) => {
         if (cancel) return;

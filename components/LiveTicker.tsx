@@ -6,6 +6,7 @@ import type { ActiveStorm, StormSummary } from "@/lib/types";
 import { fmtCoord, fmtKt } from "@/lib/units";
 import { useAtlasStore } from "@/lib/store";
 import { cn } from "@/lib/cn";
+import { withBase } from "@/lib/base-path";
 
 interface OnThisDate {
   formed: number;
@@ -57,7 +58,7 @@ export function LiveTicker() {
 
   useEffect(() => {
     let cancel = false;
-    fetch("/api/nhc-active")
+    fetch(withBase("/data/active.json"))
       .then((r) => (r.ok ? r.json() : { storms: [] }))
       .then((j: { storms?: ActiveStorm[] }) => {
         if (cancel) return;

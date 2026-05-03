@@ -1,0 +1,63 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches:
+      - main
+      - claude/hurricane-atlas-build-vLbkN
+  schedule:
+    - cron: "0 12 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      NEXT_STATIC_EXPORT: "true"
+      NEXT_PUBLIC_BASE_PATH: "/Hurricaneapp"
+      NEXT_PUBLIC_MAPBOX_TOKEN: ${{ secrets.NEXT_PUBLIC_MAPBOX_TOKEN || 'pk.eyJ1IjoicGFldzgyIiwiYSI6ImNtbTEyMnQ3bDA1OTQyb3ByZmh2MnN2dzkifQ.2F23FdYIrX1PZdsGgZxV_g' }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - name: Install dependencies
+        run: npm install --legacy-peer-deps
+      - name: Fetch HURDAT2 + verify parser
+        run: npm run data:fetch && npm run data:verify
+      - name: Best-effort enrichment
+        run: npm run data:enrich || true
+      - name: Best-effort imagery
+        run: npm run data:imagery || true
+      - name: Best-effort active storms
+        run: npm run data:active || true
+      - name: Split storms for static fetch
+        run: npm run data:split
+      - name: Build (static export)
+        run: npx next build
+      - name: Add .nojekyll
+        run: touch out/.nojekyll
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./out
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

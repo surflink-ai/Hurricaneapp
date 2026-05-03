@@ -13,6 +13,7 @@ import { StatGrid } from "./StatGrid";
 import { IntensityChart } from "./IntensityChart";
 import { BeforeAfterSlider } from "./BeforeAfterSlider";
 import type { ResolvedImageryPair } from "@/lib/data";
+import { withBase } from "@/lib/base-path";
 
 function titleCase(s: string): string {
   return s.charAt(0).toUpperCase() + s.slice(1).toLowerCase();
@@ -28,12 +29,13 @@ export function StormPanel() {
     if (!id) { setStorm(null); setImagery([]); return; }
     let cancel = false;
     Promise.all([
-      fetch(`/api/storm/${id}`).then((r) => (r.ok ? r.json() : null)),
-      fetch(`/api/storm/${id}/imagery`).then((r) => (r.ok ? r.json() : { pairs: [] }))
-    ]).then(([st, im]) => {
+      fetch(withBase(`/data/storms/${id}.json`)).then((r) => (r.ok ? r.json() : null)),
+      fetch(withBase(`/data/imagery.json`)).then((r) => (r.ok ? r.json() : []))
+    ]).then(([st, all]) => {
       if (cancel) return;
       setStorm((st as Storm | null) ?? null);
-      setImagery((im as { pairs: ResolvedImageryPair[] }).pairs ?? []);
+      const list = (all as ResolvedImageryPair[]) ?? [];
+      setImagery(list.filter((p) => p.stormId === id));
     });
     return () => { cancel = true; };
   }, [id]);

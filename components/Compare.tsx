@@ -16,6 +16,7 @@ import { useAtlasStore } from "@/lib/store";
 import type { Storm } from "@/lib/types";
 import { CAT_REFERENCE_KT, CAT_COLORS, CAT_LABELS } from "@/lib/saffir";
 import { cn } from "@/lib/cn";
+import { withBase } from "@/lib/base-path";
 
 const COMPARE_HUES = ["#0a0a08", "#9a2a1f", "#6b21a8"];
 
@@ -42,7 +43,7 @@ export function Compare() {
       compareIds
         .filter((id) => !storms[id])
         .map(async (id) => {
-          const r = await fetch(`/api/storm/${id}`);
+          const r = await fetch(withBase(`/data/storms/${id}.json`));
           if (!r.ok) return null;
           const s = (await r.json()) as Storm;
           return s;
